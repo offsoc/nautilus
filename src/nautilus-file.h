@@ -86,11 +86,9 @@ typedef enum {
 #define NAUTILUS_THUMBNAIL_MINIMUM_ICON_SIZE 32
 
 /* Emblems sometimes displayed for NautilusFiles. Do not localize. */
-#define NAUTILUS_FILE_EMBLEM_NAME_SYMBOLIC_LINK "symbolic-link"
-#define NAUTILUS_FILE_EMBLEM_NAME_CANT_READ "unreadable"
-#define NAUTILUS_FILE_EMBLEM_NAME_CANT_WRITE "readonly"
-#define NAUTILUS_FILE_EMBLEM_NAME_TRASH "trash"
-#define NAUTILUS_FILE_EMBLEM_NAME_NOTE "note"
+#define NAUTILUS_FILE_EMBLEM_NAME_SYMBOLIC_LINK "symbolic-link-symbolic"
+#define NAUTILUS_FILE_EMBLEM_NAME_CANT_READ "readonly-symbolic"
+#define NAUTILUS_FILE_EMBLEM_NAME_CANT_WRITE "unwriteable-symbolic"
 
 typedef void (*NautilusFileCallback)          (NautilusFile  *file,
 				               gpointer       callback_data);
