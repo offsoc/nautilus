@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="NautilusFileChooser" parent="AdwWindow">
+    <property name="width-request">360</property>
+    <property name="height-request">380</property>
+    <property name="default-width">890</property>
+    <property name="default-height">550</property>
+    <style>
+      <class name="view"/>
+    </style>
+    <child>
+      <object class="NautilusShortcutManager">
+        <property name="child">
+          <object class="AdwOverlaySplitView" id="split_view">
+            <property name="max-sidebar-width">240</property>
+            <property name="sidebar-width-unit">px</property>
+            <property name="sidebar-width-fraction">0.2</property>
+            <property name="sidebar">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar">
+                    <child type="start">
+                      <object class="GtkToggleButton">
+                        <property name="tooltip_text" translatable="yes">Search Everywhere</property>
+                        <property name="action_name">slot.search-global</property>
+                        <property name="icon_name">edit-find-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="NautilusGtkPlacesSidebar" id="places_sidebar">
+                    <property name="vexpand">True</property>
+                    <property name="show-other-locations">True</property>
+                    <property name="show-starred-location">True</property>
+                  </object>
+                </property>
+              </object>
+            </property>
+            <property name="content">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="NautilusToolbar" id="toolbar">
+                    <property name="show-toolbar-children">True</property>
+                    <property name="window-slot">slot</property>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="NautilusWindowSlot" id="slot"/>
+                </property>
+                <child type="bottom">
+                  <object class="GtkBox" id="bottom_toolbar">
+                    <style>
+                      <class name="toolbar"/>
+                    </style>
+                    <child>
+                      <object class="GtkCenterBox">
+                        <property name="valign">center</property>
+                        <style>
+                          <class name="toolbar"/>
+                        </style>
+                        <child type="start">
+                          <object class="GtkDropDown" id="filters_dropdown">
+                            <property name="tooltip-text" translatable="yes">Visible Files Filter</property>
+                          </object>
+                        </child>
+                        <child type="end">
+                          <object class="GtkMenuButton" id="options_menu_button">
+                            <property name="icon-name">view-more-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Show Options</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCenterBox" id="accept_box">
+                        <property name="halign">end</property>
+                        <property name="hexpand">true</property>
+                        <style>
+                          <class name="toolbar"/>
+                        </style>
+                        <child type="start">
+                          <object class="GtkToggleButton" id="show_sidebar_button">
+                            <property name="active"
+                                      bind-source="split_view" bind-property="show-sidebar" bind-flags="bidirectional|sync-create"/>
+                            <property name="visible">false</property>
+                            <property name="tooltip-text" translatable="yes">Show Sidebar</property>
+                            <property name="icon-name">sidebar-show-symbolic</property>
+                          </object>
+                        </child>
+                        <child type="center">
+                          <object class="GtkButton" id="accept_button">
+                            <property name="use-underline">true</property>
+                            <style>
+                              <class name="pill"/>
+                              <class name="suggested-action"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </child>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 682sp</condition>
+        <setter object="split_view" property="collapsed">true</setter>
+        <setter object="bottom_toolbar" property="orientation">vertical</setter>
+        <setter object="show_sidebar_button" property="visible">true</setter>
+        <setter object="accept_box" property="halign">fill</setter>
+      </object>
+    </child>
+    <child>
+      <object class="GtkShortcutController">
+        <property name="scope">managed</property>
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">Escape</property>
+            <property name="action">action(window.close)</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

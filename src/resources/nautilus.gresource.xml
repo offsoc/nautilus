@@ -27,6 +27,7 @@
     <file>ui/nautilus-operations-ui-manager-request-passphrase.ui</file>
     <file>ui/nautilus-grid-cell.ui</file>
     <file>ui/nautilus-name-cell.ui</file>
+    <file>ui/nautilus-file-chooser.ui</file>
     <file alias="gtk/ui/nautilusgtksidebarrow.ui">../gtk/nautilusgtksidebarrow.ui</file>
     <file alias="gtk/ui/nautilusgtkplacesview.ui">../gtk/nautilusgtkplacesview.ui</file>
     <file alias="gtk/ui/nautilusgtkplacesviewrow.ui">../gtk/nautilusgtkplacesviewrow.ui</file>
