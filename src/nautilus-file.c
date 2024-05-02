@@ -4324,7 +4324,8 @@ get_custom_icon_metadata_name (NautilusFile *file)
 }
 
 static GIcon *
-get_mount_icon (NautilusFile *file)
+get_mount_icon (NautilusFile *file,
+                gboolean      symbolic)
 {
     GMount *mount;
     GIcon *mount_icon;
@@ -4334,7 +4335,15 @@ get_mount_icon (NautilusFile *file)
 
     if (mount != NULL)
     {
-        mount_icon = g_mount_get_icon (mount);
+        if (!symbolic)
+        {
+            mount_icon = g_mount_get_icon (mount);
+        }
+        else
+        {
+            mount_icon = g_mount_get_symbolic_icon (mount);
+        }
+
         g_object_unref (mount);
     }
     else
@@ -4677,7 +4686,7 @@ nautilus_file_get_emblem_icons (NautilusFile *file)
         icons = g_list_prepend (icons, icon);
     }
 
-    icon = get_mount_icon (file);
+    icon = get_mount_icon (file, TRUE);
     if (icon != NULL)
     {
         icons = g_list_prepend (icons, icon);
@@ -4707,7 +4716,7 @@ nautilus_file_get_gicon (NautilusFile          *file,
 
     if (flags & NAUTILUS_FILE_ICON_FLAGS_USE_MOUNT_ICON)
     {
-        icon = get_mount_icon (file);
+        icon = get_mount_icon (file, FALSE);
 
         if (icon != NULL)
         {
