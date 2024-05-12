@@ -52,7 +52,6 @@
 #include "nautilus-metadata.h"
 #include "nautilus-mime-actions.h"
 #include "nautilus-module.h"
-#include "nautilus-pathbar.h"
 #include "nautilus-progress-indicator.h"
 #include "nautilus-scheme.h"
 #include "nautilus-shortcut-manager.h"
@@ -337,12 +336,9 @@ action_show_current_location_menu (GSimpleAction *action,
                                    GVariant      *state,
                                    gpointer       user_data)
 {
-    NautilusWindow *window = user_data;
-    GtkWidget *path_bar;
+    NautilusWindow *self = NAUTILUS_WINDOW (user_data);
 
-    path_bar = nautilus_toolbar_get_path_bar (NAUTILUS_TOOLBAR (window->toolbar));
-
-    nautilus_path_bar_show_current_location_menu (NAUTILUS_PATH_BAR (path_bar));
+    nautilus_toolbar_show_current_location_menu (NAUTILUS_TOOLBAR (self->toolbar));
 }
 
 static void
