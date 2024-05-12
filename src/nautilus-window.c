@@ -76,7 +76,7 @@ static GtkWidget *nautilus_window_ensure_location_entry (NautilusWindow *window)
 static void nautilus_window_back_or_forward (NautilusWindow *window,
                                              gboolean        back,
                                              guint           distance);
-static void nautilus_window_sync_location_widgets (NautilusWindow *window);
+static void nautilus_window_sync_bookmarks (NautilusWindow *window);
 static void update_cursor (NautilusWindow *window);
 
 /* Sanity check: highest mouse button value I could find was 14. 5 is our
@@ -374,7 +374,7 @@ action_open_location (GSimpleAction *action,
 static void
 on_location_changed (NautilusWindow *window)
 {
-    nautilus_window_sync_location_widgets (window);
+    nautilus_window_sync_bookmarks (window);
     nautilus_gtk_places_sidebar_set_location (NAUTILUS_GTK_PLACES_SIDEBAR (window->places_sidebar),
                                               nautilus_window_slot_get_location (nautilus_window_get_active_slot (window)));
 }
@@ -986,33 +986,6 @@ nautilus_window_sync_bookmarks (NautilusWindow *window)
 
     action = g_action_map_lookup_action (G_ACTION_MAP (window), "bookmark-current-location");
     g_simple_action_set_enabled (G_SIMPLE_ACTION (action), can_bookmark);
-}
-
-static void
-nautilus_window_sync_location_widgets (NautilusWindow *window)
-{
-    NautilusWindowSlot *slot = window->active_slot;
-    GFile *location;
-
-    /* This function is called by while there is a slot. */
-    g_assert (slot != NULL);
-
-    location = nautilus_window_slot_get_location (slot);
-
-    /* Change the location bar and path bar to match the current location. */
-    if (location != NULL)
-    {
-        GtkWidget *location_entry;
-        GtkWidget *path_bar;
-
-        location_entry = nautilus_toolbar_get_location_entry (NAUTILUS_TOOLBAR (window->toolbar));
-        nautilus_location_entry_set_location (NAUTILUS_LOCATION_ENTRY (location_entry), location);
-
-        path_bar = nautilus_toolbar_get_path_bar (NAUTILUS_TOOLBAR (window->toolbar));
-        nautilus_path_bar_set_path (NAUTILUS_PATH_BAR (path_bar), location);
-    }
-
-    nautilus_window_sync_bookmarks (window);
 }
 
 static GtkWidget *
