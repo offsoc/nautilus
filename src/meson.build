@@ -211,6 +211,8 @@ libnautilus_sources = [
   'nautilus-progress-paintable.h',
   'nautilus-program-choosing.c',
   'nautilus-program-choosing.h',
+  'nautilus-request.c',
+  'nautilus-request.h',
   'nautilus-search-directory.c',
   'nautilus-search-directory.h',
   'nautilus-search-directory-file.c',

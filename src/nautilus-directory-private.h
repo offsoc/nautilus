@@ -26,6 +26,7 @@
 
 #include "nautilus-directory.h"
 #include "nautilus-file.h"
+#include "nautilus-request.h"
 
 typedef struct FileMonitors FileMonitors;
 typedef struct DirectoryLoadState DirectoryLoadState;
@@ -36,25 +37,6 @@ typedef struct NewFilesState NewFilesState;
 typedef struct ThumbnailState ThumbnailState;
 typedef struct MountState MountState;
 typedef struct FilesystemInfoState FilesystemInfoState;
-
-typedef enum {
-	REQUEST_DEEP_COUNT,
-	REQUEST_DIRECTORY_COUNT,
-	REQUEST_FILE_INFO,
-	REQUEST_FILE_LIST, /* always FALSE if file != NULL */
-	REQUEST_EXTENSION_INFO,
-	REQUEST_THUMBNAIL,
-	REQUEST_MOUNT,
-	REQUEST_FILESYSTEM_INFO,
-	REQUEST_TYPE_LAST
-} RequestType;
-
-/* A request for information about one or more files. */
-typedef guint32 Request;
-typedef gint32 RequestCounter[REQUEST_TYPE_LAST];
-
-#define REQUEST_WANTS_TYPE(request, type) ((request) & (1<<(type)))
-#define REQUEST_SET_TYPE(request, type) (request) |= (1<<(type))
 
 struct NautilusDirectoryPrivate
 {
@@ -192,7 +174,6 @@ void               nautilus_directory_emit_load_error                 (NautilusD
 NautilusDirectory *nautilus_directory_get_internal                    (GFile                     *location,
 								       gboolean                   create);
 char *             nautilus_directory_get_name_for_self_as_new_file   (NautilusDirectory         *directory);
-Request            nautilus_directory_set_up_request                  (NautilusFileAttributes     file_attributes);
 
 /* Interface to the file list. */
 NautilusFile *     nautilus_directory_find_file_by_name               (NautilusDirectory         *directory,
