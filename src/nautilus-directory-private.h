@@ -207,3 +207,4 @@ void               nautilus_directory_remove_file_from_work_queue     (NautilusD
 
 /* debugging functions */
 int                nautilus_directory_number_outstanding              (void);
+gboolean           nautilus_directory_verify_counters                 (NautilusDirectory *directory);
