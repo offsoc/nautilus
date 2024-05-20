@@ -1192,13 +1192,6 @@ nautilus_directory_callbacks_add (NautilusDirectory         *directory,
         .request = request
     };
 
-    /* Handle the NULL case. */
-    if (directory == NULL)
-    {
-        ready_callback_call (NULL, &callback);
-        return;
-    }
-
     /* Check if the callback is already there. */
     GList *unsatisfied_list = directory->details->call_when_ready_lists.unsatisfied;
 
