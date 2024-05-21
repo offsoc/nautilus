@@ -115,6 +115,7 @@ typedef union
 
 typedef struct
 {
+    NautilusDirectory *directory;
     NautilusFile *file;     /* Which file, NULL means all. */
     CallbackUnion callback;
     gpointer callback_data;
@@ -1139,8 +1140,7 @@ ready_callback_key_compare (gconstpointer a,
 }
 
 static void
-ready_callback_call (NautilusDirectory   *directory,
-                     const ReadyCallback *callback)
+ready_callback_call (const ReadyCallback *callback)
 {
     GList *file_list;
 
@@ -1155,18 +1155,18 @@ ready_callback_call (NautilusDirectory   *directory,
     }
     else if (callback->callback.directory != NULL)
     {
-        if (directory == NULL ||
+        if (callback->directory == NULL ||
             !REQUEST_WANTS_TYPE (callback->request, REQUEST_FILE_LIST))
         {
             file_list = NULL;
         }
         else
         {
-            file_list = nautilus_directory_get_file_list (directory);
+            file_list = nautilus_directory_get_file_list (callback->directory);
         }
 
         /* Pass back the file list if the user was waiting for it. */
-        (*callback->callback.directory)(directory,
+        (*callback->callback.directory)(callback->directory,
                                         file_list,
                                         callback->callback_data);
 
@@ -1209,6 +1209,7 @@ nautilus_directory_callbacks_add_directory (NautilusDirectory         *directory
     /* Construct a callback object. */
     ReadyCallback callback =
     {
+        .directory = directory,
         .callback = (CallbackUnion){.directory = directory_callback},
         .callback_data = callback_data,
         .request = request
@@ -1346,6 +1347,7 @@ nautilus_directory_callbacks_remove_directory (NautilusDirectory         *direct
 {
     ReadyCallback callback =
     {
+        .directory = directory,
         .callback = (CallbackUnion){.directory = directory_callback},
         .callback_data = callback_data,
     };
@@ -1644,7 +1646,7 @@ call_ready_callbacks_at_idle (gpointer callback_data)
         remove_callback_link_keep_data (directory, node, TRUE);
 
         /* Call the callback. */
-        ready_callback_call (directory, callback);
+        ready_callback_call (callback);
         g_free (callback);
     }
 
@@ -1688,7 +1690,7 @@ call_ready_callbacks (NautilusDirectory *directory)
 
         gboolean satisfied = (callback->file != NULL) ?
                              nautilus_request_file_is_satisfied (callback->request, callback->file) :
-                             nautilus_request_directory_is_satisfied (callback->request, directory);
+                             nautilus_request_directory_is_satisfied (callback->request, callback->directory);
 
         if (satisfied)
         {
