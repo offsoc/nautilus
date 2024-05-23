@@ -1171,6 +1171,8 @@ ready_callback_call (const ReadyCallback *callback)
                                         callback->callback_data);
 
         nautilus_file_list_free (file_list);
+
+        nautilus_directory_async_state_changed (callback->directory);
     }
 }
 
@@ -1649,8 +1651,6 @@ call_ready_callbacks_at_idle (gpointer callback_data)
         ready_callback_call (callback);
         g_free (callback);
     }
-
-    nautilus_directory_async_state_changed (directory);
 
     nautilus_directory_unref (directory);
 
