@@ -193,6 +193,8 @@ libnautilus_sources = [
   'nautilus-hash-queue.c',
   'nautilus-hash-queue.h',
   'nautilus-icon-info.c',
+  'nautilus-internal-place-file.c',
+  'nautilus-internal-place-file.h',
   'nautilus-icon-info.h',
   'nautilus-icon-names.h',
   'nautilus-keyfile-metadata.c',
