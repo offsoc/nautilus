@@ -37,6 +37,7 @@ typedef struct NewFilesState NewFilesState;
 typedef struct ThumbnailState ThumbnailState;
 typedef struct MountState MountState;
 typedef struct FilesystemInfoState FilesystemInfoState;
+typedef struct NautilusDirectoryCallbacks NautilusDirectoryCallbacks;
 
 struct NautilusDirectoryPrivate
 {
@@ -53,19 +54,10 @@ struct NautilusDirectoryPrivate
 	NautilusHashQueue *low_priority_queue;
 	NautilusHashQueue *extension_queue;
 
-	/* Callbacks are inserted into ready when the callback is triggered and
-	 * scheduled to be called at idle. It's still kept in the list so we
-	 * can kill it when the file goes away before being called.
-	 */
-	struct
-	{
-		GList *unsatisfied;
-		GList *ready;
-	} call_when_ready_lists;
-	RequestCounter call_when_ready_counters;
+	NautilusDirectoryCallbacks *callbacks;
+
 	GHashTable *monitor_table;
 	RequestCounter monitor_counters;
-	guint call_ready_idle_id;
 
 	NautilusMonitor *monitor;
 	gulong 		 mime_db_monitor;
@@ -218,3 +210,9 @@ void               nautilus_directory_remove_file_from_work_queue     (NautilusD
 /* debugging functions */
 int                nautilus_directory_number_outstanding              (void);
 gboolean           nautilus_directory_verify_counters                 (NautilusDirectory *directory);
+
+/* callback related functions */
+NautilusDirectoryCallbacks *
+nautilus_directory_callbacks_new (void);
+void
+nautilus_directory_callbacks_free (NautilusDirectoryCallbacks *callbacks);
